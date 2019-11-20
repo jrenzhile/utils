@@ -1,0 +1,36 @@
+import os
+
+
+filepath = 'test.html'
+filepath_new = 'test_new.html'
+fs = open(filepath_new, 'w');
+
+url_dict = dict();
+
+
+with open(filepath) as fp:
+    for cur_line in fp:
+        flag = 1;
+
+        if "HREF=" in cur_line:
+            i_start = cur_line.find('HREF=');
+            i_end = cur_line.find('>', i_start)
+            cur_string = cur_line[i_start+6:i_end-1]
+
+            if "ADD_DATE=" in cur_string:
+                i_end = cur_string.find("ADD_DATE=")
+                cur_string = cur_string[:i_end-2]
+
+            if cur_string in url_dict:
+                flag = 0
+            else:
+                url_dict[cur_string]=1;
+
+        if flag > 0:
+            fs.write(cur_line)
+
+fs.close()
+
+
+
+
